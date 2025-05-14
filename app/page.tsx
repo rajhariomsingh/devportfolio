@@ -25,10 +25,12 @@ const ThemeContext = createContext({
   theme: "dark",
   toggleTheme: () => {},
 });
-
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
 const useTheme = () => useContext(ThemeContext);
 
-const ThemeProvider = ({ children }) => {
+const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
@@ -59,9 +61,11 @@ export default function Home() {
   );
 }
 
+
 const MarketingPortfolio = () => {
   const { theme, toggleTheme } = useTheme();
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -92,7 +96,7 @@ const MarketingPortfolio = () => {
 
   const formRef = useRef(null);
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     setIsMobileMenuOpen(false);
     const section = document.getElementById(sectionId);
@@ -281,8 +285,9 @@ const MarketingPortfolio = () => {
     { name: "Achievements", href: "#achievements" },
     { name: "Contact", href: "#contact" },
   ];
+  
 
-  const handleProjectClick = (projectId) => {
+  const handleProjectClick = (projectId: string) => {
     setSelectedProject(projectId);
     setIsModalOpen(true);
   };
@@ -292,7 +297,7 @@ const MarketingPortfolio = () => {
     setSelectedProject(null);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -300,7 +305,7 @@ const MarketingPortfolio = () => {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     toast.success("Message sent successfully! We'll get back to you soon.", {
